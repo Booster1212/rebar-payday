@@ -9,7 +9,7 @@ export const PaydayConfig = {
         AscendedFactions: false,
     },
     Payments: {
-        interval: 15000,
+        interval: 60000 * 60,
         defaultSender: 'GOVERNMENT',
         unemployedAmount: 25,
     },

@@ -1,10 +1,11 @@
 import { useApi } from '@Server/api/index.js';
-import { getPaydayHistory, triggerManualPayday } from './functions.js';
+import { getPaydayHistory, triggerManualPayday, updatePayday } from './functions.js';
 
 export function usePaydayAPI() {
     const user = {
         triggerPayday: triggerManualPayday,
         getHistory: getPaydayHistory,
+        updatePayday: updatePayday,
     };
 
     // const faction = {

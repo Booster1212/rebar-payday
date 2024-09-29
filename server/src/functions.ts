@@ -120,7 +120,7 @@ function logPaymentTransaction(player: alt.Player, amount: number, missedPeriods
  * @param amount - The amount paid.
  * @param missedPeriods - The number of missed payday periods.
  */
-async function updatePayday(player: alt.Player, source: string, amount: number, missedPeriods: number = 0) {
+export async function updatePayday(player: alt.Player, source: string, amount: number, missedPeriods: number = 0) {
     const document = await getPaymentData(player);
     if (!document) return;
 
@@ -131,6 +131,25 @@ async function updatePayday(player: alt.Player, source: string, amount: number, 
     });
 
     document.lastPayday = new Date();
+
+    await Database.update(document, PaydayConfig.General.dbCollection);
+}
+
+/**
+ * Resets the payday data to unemployed payment again for a player.
+ * @param player - The player to reset the payday data for.
+ */
+export async function resetPaydayDefault(player: alt.Player) {
+    const characterDocument = Rebar.document.character.useCharacter(player).get();
+    if (!characterDocument) return;
+
+    const document: PlayerPayday = {
+        lastPayday: new Date(),
+        amount: PaydayConfig.Payments.unemployedAmount,
+        paydays: [],
+        username: characterDocument.name,
+        sender: PaydayConfig.Payments.defaultSender,
+    };
 
     await Database.update(document, PaydayConfig.General.dbCollection);
 }
